@@ -1,3 +1,5 @@
+import random
+
 class Pokemon:
     
     def __init__(self, pokemon_nom, pokemon_adversaire, pv, niveau, attaque, defense, type=None, faiblesses=None, resistances=None):
@@ -64,7 +66,7 @@ class Joueur:
         self.niveau = niveau
         self.pokemon = pokemon
 
-class Combat(Pokemon):
+class Combat:
     def __init__(self, joueur1, joueur2):
         self.joueur1 = joueur1
         self.joueur2 = joueur2
@@ -84,38 +86,78 @@ class Combat(Pokemon):
         defenseur.pv -= self.degats
 
         # Affichage du résultat de l'attaque
-        print(f"{self.pokemon_nom} attaque {defenseur.nom} et lui inflige {self.degats} PV de dégâts.")
+        print(f"{attaquant.pokemon_nom} attaque {defenseur.pokemon_nom} et lui inflige {self.degats} PV de dégâts.")
         if defenseur.pv <= 0:
-            print(f"{defenseur.nom} est K.O. !")
-
+            print(f"{defenseur.pokemon_nom} est K.O. !")
 
     def tour(self):
         # Le joueur 1 attaque le joueur 2
-        print(f"{self.joueur1} envoie {self.joueur1.pokemon_nom} en combat !")
+        print(f"{self.joueur1.nom_joueur} envoie {self.joueur1.pokemon.pokemon_nom} en combat !")
         self.attaque(self.joueur1.pokemon, self.joueur2.pokemon)
         if self.joueur2.pokemon.pv <= 0:
             print(f"{self.joueur2.nom_joueur} perd le combat.")
             return
 
-        print(f"{self.joueur2} envoie {self.joueur2.pokemon.nom} en combat !")
+        print(f"{self.joueur2.nom_joueur} envoie {self.joueur2.pokemon.pokemon_nom} en combat !")
         self.attaque(self.joueur2.pokemon, self.joueur1.pokemon)
         if self.joueur1.pokemon.pv <= 0:
             print(f"{self.joueur1.nom_joueur} perd le combat.")
             return
 
         # Le combat continue si les deux Pokémon sont encore en vie
-        print(f"Il reste {self.joueur1.pokemon.pv} PV à {self.joueur1.pokemon.nom} et {self.joueur2.pokemon.pv} PV à {self.joueur2.pokemon.nom}.")
+        print(f"Il reste {self.joueur1.pokemon.pv} PV à {self.joueur1.pokemon.pokemon_nom} et {self.joueur2.pokemon.pv} PV à {self.joueur2.pokemon.pokemon_nom}.")
+
+class Joueur:
+    def __init__(self, joueur_ennemi, joueur_nom):
+        self.pokemon = None
+        self.joueur_nom = joueur_nom
+        self.joueur_ennemi = joueur_ennemi
+        joueur_ennemi = random.choice(["Jean", "Marie", "Lucie", "Pierre", "Sophie", "Bob", "Charlie"])
+
+    
+    def choisir_pokemon(self, pokemon):
+        self.pokemon = pokemon
+        print(f"{self.nom} a choisi {pokemon.nom} !")
+    
+    def attaquer(self, joueur, adversaire):
+
+        combat = Combat(self, adversaire)
+        combat.tour()
+
 
 liste_pokemon = ['Pikachu', 'Salameche', 'Bulbizarre', 'Carapuce', 'Rondoudou', 'Aspicot', 'Rattata', 'Piafabec', 'Abo', 'Papilusion', 'Dracaufeu', 'Tortank', 'Florizarre']
 print(*liste_pokemon)
 pokemon_nom = input("Choisissez un Pokemon dans la liste: ")
+joueur = Joueur()
+pokemon = Pokemon()
 
 if pokemon_nom in liste_pokemon:
-    pokemon_nom = Pokemon(pokemon_nom)
+    #pokemon_nom = Pokemon(pokemon_nom)
+
     print(f"Vous avez choisi {pokemon_nom}!")
+    print(f"Vouler vous combatre {joueur.joueur_ennemi()} avec votre {pokemon_nom}?")
 else:
     print("Ce Pokemon n'est pas dans la liste.")
 
 
 def se_defendre(self):
     print(f"{pokemon_nom} se défend.")
+
+print("Le combat commence !")
+
+while True:
+    joueur.joueur_nom().attaquer(joueur.joueur_ennemi())
+    print(f"{pokemon.pokemon_nom} attaque {pokemon.pokemon_adversaire} !")
+    joueur.pokemon.pv -= combat.degats
+    print(f"Il reste {pokemon.pokemon_adversaire.pv} points de vie à {pokemon.pokemon_adversaire()} !")
+    if joueur.pokemon.points_de_vie <= 0:
+        print(f"{joueur.pokemon.nom} est K.O. !")
+
+    if joueur.joueur_ennemi().pokemon.pv <= 0:
+        print(f"{joueur.joueur_ennemi()} n'a plus de Pokémon ! {joueur.joueur_nom()} a gagné le combat !")
+        break
+    
+    joueur.joueur_ennemi().attaquer(joueur.joueur_nom())
+    if joueur.joueur_nom.pokemon.pv <= 0:
+        print(f"{joueur.joueur_nom()} n'a plus de Pokémon ! {joueur.joueur_ennemi()} a gagné le combat !")
+        break
